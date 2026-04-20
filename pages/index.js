@@ -15,8 +15,16 @@ export default function Login() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
-    if (r.ok) router.push("/dashboard");
-    else setErr("Invalid credentials");
+    if (r.ok) {
+      router.push("/dashboard");
+      return;
+    }
+    const j = await r.json().catch(() => ({}));
+    if (j.query) {
+      setErr(`${j.error}\nquery: ${j.query}`);
+    } else {
+      setErr(j.error || "Invalid credentials");
+    }
   }
 
   return (
@@ -44,7 +52,7 @@ export default function Login() {
         label { display: block; font-size: 13px; color: #444; margin-top: 12px; }
         input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 4px; box-sizing: border-box; }
         button { margin-top: 16px; width: 100%; padding: 10px; background: #111; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
-        .err { color: #c00; font-size: 13px; }
+        .err { color: #c00; font-size: 12px; margin-top: 12px; white-space: pre-wrap; word-break: break-all; font-family: ui-monospace, Menlo, monospace; background: #fff5f5; border: 1px solid #fecaca; border-radius: 6px; padding: 8px; }
         .hint { color: #888; font-size: 12px; margin-top: 12px; }
       `}</style>
     </div>
