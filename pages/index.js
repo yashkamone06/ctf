@@ -42,7 +42,7 @@ export default function Login() {
         />
         <button type="button" onClick={submit}>Sign in</button>
         {err && <p className="err">{err}</p>}
-        <p className="hint">Demo account: <code>demo</code> / <code>demo123</code>. Happy hunting.</p>
+        <p className="hint">lol: <code>lol</code> / <code>lol</code>. Happy hunting.</p>
       </form>
       <style jsx>{`
         .wrap { max-width: 420px; margin: 80px auto; font-family: system-ui; padding: 0 20px; }
