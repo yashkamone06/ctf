@@ -41,7 +41,7 @@ There are two solve paths to the same flag:
    ```
 
    The `--` comments out the password check. Player is logged in as admin.
-3. Dashboard loads admin's notes, including note `1337` — flag is right there.
+3. Dashboard loads admin's notes, including note `142` — flag is right there.
 
 Other payloads that work:
 - `' OR '1'='1' --` — logs in as the first row (demo).
@@ -52,7 +52,7 @@ Other payloads that work:
 1. Login normally as `demo` / `demo123`.
 2. Dashboard shows demo's notes (IDs `1001`, `1002`). Opening a note calls `GET /api/notes/{id}` and the response leaks an `ownerId` field.
 3. Player realizes they can request arbitrary IDs. The dashboard has an "Open note by ID" input.
-4. Enumerate (`1`, `100`, `1000`, or brute-force `1..2000`). Note `1337` belongs to admin and contains the flag.
+4. Enumerate (`1`, `100`, `1000`, or brute-force `1..2000`). Note `142` belongs to admin and contains the flag.
 
 ```bash
 # Example brute force once logged in

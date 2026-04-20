@@ -20,10 +20,10 @@ NoteVault is a **Capture The Flag (CTF) challenge** built to teach two web vulns
 ## Project purpose
 
 A deliberately vulnerable Next.js app that runs on Vercel's free tier. Two solve paths lead to the same flag:
-- **SQLi** the login form (e.g. `admin' --`) to log in as admin, then read note `1337` directly.
-- **Normal login** as `demo / demo123`, then exploit the IDOR on `/api/notes/{id}` to read note `1337`.
+- **SQLi** the login form (e.g. `admin' --`) to log in as admin, then read note `142` directly.
+- **Normal login** as `demo / demo123`, then exploit the IDOR on `/api/notes/{id}` to read note `142`.
 
-**The flag:** `BFHL_CTF{idor_1s_scary_wh3n_auth_is_missing}` (lives in `lib/db.js`, note ID `1337`).
+**The flag:** `BFHL_CTF{idor_1s_scary_wh3n_auth_is_missing}` (lives in `lib/db.js`, note ID `142`).
 
 **Flag format:** `BFHL_CTF{...}`. If asked to change the flag, keep this prefix unless the user says otherwise.
 
@@ -64,7 +64,7 @@ notevault-ctf/
 
 Users are stored in an **array** (insertion order preserved) so that SQLi payloads like `' OR 1=1 --` return the first row (demo), matching real SQL behavior without an `ORDER BY`.
 
-Notes are created with sequential IDs starting at `1001`, **except** the flag note which is hard-pinned to ID `1337` and owned by admin (user 42).
+Notes are created with sequential IDs starting at `1001`, **except** the flag note which is hard-pinned to ID `142` and owned by admin (user 42).
 
 ## The vulnerabilities (intentional)
 
@@ -105,7 +105,7 @@ The endpoint verifies **authentication** but never **authorization**. Any logged
 1. The `ownerId` field is returned in the note API response — signals ownership is tracked server-side but not enforced.
 2. Note IDs are sequential integers starting at 1001 → easy to enumerate.
 3. The dashboard has an "Open note by ID" input so players can try IDs without Burp.
-4. The flag note ID `1337` is a well-known hacker number → findable by guessing or brute force in the first ~2000 IDs.
+4. The flag note ID `142` sits well below the sequential seed range (`1001+`), so a brute-force scan from ID `1` upward hits it early. The trailing `42` also echoes admin's user ID (`42`), a subtle bread-crumb.
 
 **These are all intentional difficulty levers.** Removing them makes the challenge harder; add them back if you want it easier.
 
@@ -127,7 +127,7 @@ Anything else (`;` multi-statements, `UNION`, `JOIN`, `LIKE`, subqueries) is uns
 
 ### Change the flag
 
-Edit `lib/db.js`, find the object with `id: 1337`, update the `body` string. Keep the `BFHL_CTF{...}` format unless the user asks otherwise. Also update the README's solution paths so the writeup stays accurate.
+Edit `lib/db.js`, find the object with `id: 142`, update the `body` string. Keep the `BFHL_CTF{...}` format unless the user asks otherwise. Also update the README's solution paths so the writeup stays accurate.
 
 ### Make the challenge harder
 
@@ -136,7 +136,7 @@ Tunable knobs:
 2. Drop `ownerId` from the note response in `pages/api/notes/[id].js` → players can't visually confirm IDOR.
 3. Remove the "Open by ID" input from `pages/dashboard.js` → forces Burp / curl for IDOR.
 4. Switch note IDs to UUIDs in `lib/db.js` → IDOR brute force becomes infeasible.
-5. Randomize the flag note ID on seed → no "try 1337" shortcut.
+5. Randomize the flag note ID on seed → no "try 142" shortcut.
 
 ### Make the challenge easier
 
@@ -160,10 +160,10 @@ Smoke test after any change:
 2. SQLi login: username `admin' --`, any password → should succeed as admin.
 3. SQLi discovery: username `'`, any password → 500 response with `"database error: unterminated string literal"` and the raw `query` field.
 4. Dashboard loads the signed-in user's notes.
-5. Open note by ID `1337` as demo → returns flag (IDOR path).
-6. Open note by ID `1337` as admin (via SQLi login) → returns flag in their own notes list.
+5. Open note by ID `142` as demo → returns flag (IDOR path).
+6. Open note by ID `142` as admin (via SQLi login) → returns flag in their own notes list.
 7. Open note by ID `99999` → 404.
-8. Without logging in, `curl /api/notes/1337` → 401.
+8. Without logging in, `curl /api/notes/142` → 401.
 
 ### Deploy
 

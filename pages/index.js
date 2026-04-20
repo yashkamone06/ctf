@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 export default function Login() {
-  const [username, setUsername] = useState("demo");
-  const [password, setPassword] = useState("demo123");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const router = useRouter();
 
@@ -42,7 +42,7 @@ export default function Login() {
         />
         <button type="button" onClick={submit}>Sign in</button>
         {err && <p className="err">{err}</p>}
-        <p className="hint">Demo account prefilled. Happy hunting.</p>
+        <p className="hint">Demo account: <code>demo</code> / <code>demo123</code>. Happy hunting.</p>
       </form>
       <style jsx>{`
         .wrap { max-width: 420px; margin: 80px auto; font-family: system-ui; padding: 0 20px; }
