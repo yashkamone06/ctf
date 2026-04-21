@@ -8,7 +8,7 @@ A deliberately vulnerable Next.js app for teaching **SQL Injection** on login an
 >
 > A known low-privilege account exists (`demo` / `demo123`) in case you need a foothold, but the fastest path in may not need it.
 >
-> Flag format: `BFHL_CTF{...}`
+> Flag format: `BFHL{...}`
 
 ## Deploy to Vercel
 
@@ -58,7 +58,7 @@ Other payloads that work:
 # Example brute force once logged in
 for i in {1..2000}; do
   curl -s -b "session=$TOKEN" "https://your-app.vercel.app/api/notes/$i" \
-    | grep -o 'BFHL_CTF{[^}]*}' && echo "found at $i"
+    | grep -o 'BFHL{[^}]*}' && echo "found at $i"
 done
 ```
 

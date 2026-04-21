@@ -23,9 +23,9 @@ A deliberately vulnerable Next.js app that runs on Vercel's free tier. Two solve
 - **SQLi** the login form (e.g. `admin' --`) to log in as admin, then read note `142` directly.
 - **Normal login** as `demo / demo123`, then exploit the IDOR on `/api/notes/{id}` to read note `142`.
 
-**The flag:** `BFHL_CTF{idor_1s_scary_wh3n_auth_is_missing}` (lives in `lib/db.js`, note ID `142`).
+**The flag:** `BFHL{idor_1s_scary_wh3n_auth_is_missing}` (lives in `lib/db.js`, note ID `142`).
 
-**Flag format:** `BFHL_CTF{...}`. If asked to change the flag, keep this prefix unless the user says otherwise.
+**Flag format:** `BFHL{...}`. If asked to change the flag, keep this prefix unless the user says otherwise.
 
 ## Tech stack
 
@@ -127,7 +127,7 @@ Anything else (`;` multi-statements, `UNION`, `JOIN`, `LIKE`, subqueries) is uns
 
 ### Change the flag
 
-Edit `lib/db.js`, find the object with `id: 142`, update the `body` string. Keep the `BFHL_CTF{...}` format unless the user asks otherwise. Also update the README's solution paths so the writeup stays accurate.
+Edit `lib/db.js`, find the object with `id: 142`, update the `body` string. Keep the `BFHL{...}` format unless the user asks otherwise. Also update the README's solution paths so the writeup stays accurate.
 
 ### Make the challenge harder
 
